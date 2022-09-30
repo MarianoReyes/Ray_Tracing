@@ -1,3 +1,4 @@
+from scipy.fftpack import diff
 from intersect import Intersect
 from lib import *
 from math import *
@@ -15,7 +16,7 @@ class Raytracer(object):
         self.background_color = color(178, 255, 255)
         self.current_color = color(255, 255, 255)
         self.scene = []
-        self.light = Light(V3(0, 0, 0), 1)
+        self.light = Light(V3(0, 0, 0), 1, color(255, 255, 255))
         self.clear()
 
     def clear(self):
@@ -58,13 +59,15 @@ class Raytracer(object):
         light_dir = (self.light.position - intersect.point).norm()
         intensity = light_dir @ intersect.normal
 
-        # color
-        diffuse = color(
-            int(material.diffuse[2] * intensity),
-            int(material.diffuse[1] * intensity),
-            int(material.diffuse[0] * intensity)
+        light_reflection = reflect(light_dir, intersect.normal)
+        specular_intensity = self.light.intensity * (
+            max(0, -(light_reflection @ direction))**material.spec
         )
-        return diffuse
+
+        diffuse = material.diffuse * intensity * material.albedo[0]
+        specular = color(255, 255, 255) * \
+            specular_intensity * material.albedo[1]
+        return diffuse + specular
 
     def scene_intersect(self, origin, direction):
         zbuffer = 999999

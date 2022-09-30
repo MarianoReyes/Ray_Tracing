@@ -1,35 +1,58 @@
 from writeutilities import *
 
 
-def color(r, g, b):
+""" def color(r, g, b):
     return bytes([b, g, r])
+ """
 
 
-""" class color(object):
+class color(object):
     def __init__(self, r, g, b):
         self.r = r
         self.g = g
         self.b = b
 
     def __mul__(self, other):
+        r = self.r
+        g = self.g
+        b = self.b
         if type(other) == int or type(other) == float:
-            self.r *= other
-            self.g *= other
-            self.b *= other
+            b = self.b * other
+            g = self.g * other
+            r = self.r * other
         else:
-            self.r *= other.r
-            self.g *= other.g
-            self.b *= other.b
+            b *= other.b
+            g *= other.g
+            r *= other.r
 
-        r = min(255, max(self.r, 0))
-        g = min(255, max(self.g, 0))
-        b = min(255, max(self.b, 0))
+        r = int(min(255, max(r, 0)))
+        g = int(min(255, max(g, 0)))
+        b = int(min(255, max(b, 0)))
+        return color(r, g, b)
+
+    def __add__(self, other):
+        r = self.r
+        g = self.g
+        b = self.b
+        if type(other) == int or type(other) == float:
+            b = self.b + other
+            g = self.g + other
+            r = self.r + other
+        else:
+            b += other.b
+            g += other.g
+            r += other.r
+
+        r = int(min(255, max(r, 0)))
+        g = int(min(255, max(g, 0)))
+        b = int(min(255, max(b, 0)))
+        return color(r, g, b)
 
     def toBytes(self):
         return bytes([self.b, self.g, self.r])
 
     def __repr__(self):
-        return "color(%s, %s, %s)" % (self.r, self.g, self.b) """
+        return "color(%s, %s, %s" % (self.r, self.g, self.b)
 
 
 def color_unit(r, g, b):
@@ -42,20 +65,6 @@ def clamping(num):
 
 BLACK = color(0, 0, 0)
 WHITE = color(255, 255, 255)
-
-""" 
-class Render(object):
-
-    def __repr__(self):
-        return "render %s x %s " % (self.width, self.height)
-
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-        self.current_color = WHITE
-        self.clear_color = BLACK
-        self.texture = None
-        self.clear() """
 
 
 def clear(self):
@@ -99,7 +108,7 @@ def writebmp(filename, width, height, framebuffer):
     # pixel data
     for x in range(height):
         for y in range(width):
-            f.write(framebuffer[y][x])
+            f.write(framebuffer[y][x].toBytes())
 
     f.close()
 
@@ -158,3 +167,7 @@ def line(self, v1, v2):
             y += 1 if y0 < y1 else -1
 
             threshold += dx * 2
+
+
+def reflect(I, N):
+    return (I - N * 2 * (N @ I) * N).norm()
