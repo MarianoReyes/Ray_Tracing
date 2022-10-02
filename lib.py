@@ -6,7 +6,7 @@ from writeutilities import *
  """
 
 
-class color(object):
+""" class color(object):
     def __init__(self, r, g, b):
         self.r = r
         self.g = g
@@ -52,7 +52,7 @@ class color(object):
         return bytes([self.b, self.g, self.r])
 
     def __repr__(self):
-        return "color(%s, %s, %s" % (self.r, self.g, self.b)
+        return "color(%s, %s, %s" % (self.r, self.g, self.b) """
 
 
 def color_unit(r, g, b):
