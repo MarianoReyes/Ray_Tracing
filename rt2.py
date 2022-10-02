@@ -6,18 +6,14 @@ from material import Material
 from light import Light
 
 r = Raytracer(800, 800)
-r.backgroud_color_change(color(209, 178, 123))
+r.background_color = (color(255, 255, 255)).to_bytes()
 r.clear()
 
 black = Material(diffuse=color(0, 0, 0), albedo=[0.9, 0.1], spec=10)
-brown = Material(diffuse=color(101, 67, 33), albedo=[1, 0], spec=10)
-light_brown = Material(diffuse=color(200, 170, 130),
-                       albedo=[1, 0], spec=10)
+brown = Material(diffuse=color(101, 67, 33), albedo=[0.6, 0, 4], spec=50)
+light_brown = Material(diffuse=color(200, 170, 130), albedo=[1, 0], spec=10)
 white = Material(diffuse=color(255, 255, 255), albedo=[0.9, 0.1], spec=10)
-
-
 red = Material(diffuse=color(255, 20, 20), albedo=(0.7, 0.3), spec=100)
-
 rubber = Material(diffuse=color(80, 0, 0),  albedo=[0.9, 0.1], spec=20)
 ivory = Material(diffuse=color(100, 100, 80), albedo=[0.6, 0.3], spec=50)
 
