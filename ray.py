@@ -14,7 +14,7 @@ class Raytracer (object):
         self.width = width
         self.height = height
         self.background_color = color(255, 255, 255).to_bytes()
-        self.color = color(255, 255, 255).to_bytes()
+        self.color = color(10, 10, 10).to_bytes()
         self.scene = []
         self.light = Light(V3(0, 0, 0), 1, color(255, 255, 255))
         self.density = 1
@@ -101,6 +101,18 @@ class Raytracer (object):
             return self.color
 
         light_dir = (self.light.position - intersect.point).norm()
+
+        shadow_bias = 1.1
+        shadow_org = intersect.point + (intersect.normal * shadow_bias)
+        shadow_material, shadow_intersect = self.scene_intersect(
+            shadow_org, light_dir)
+
+        shadow_intensity = 0
+
+        if shadow_material:
+            # esta en la sombra el punto
+            shadow_intensity = 0.7
+
         deffuse_intensity = light_dir @ intersect.normal
 
         light_reflection = self.reflect(light_dir, intersect.normal)
@@ -110,9 +122,11 @@ class Raytracer (object):
         specular = self.light.c * specular_intensity * \
             material.albedo[1] * self.light.intensity
 
-        color = material.diffuse * deffuse_intensity * material.albedo[0]
-        color = color + specular
-        return color.to_bytes()
+        diffuse = material.diffuse * deffuse_intensity * \
+            material.albedo[0] * (1-shadow_intensity)
+        diffuse = diffuse + specular
+
+        return diffuse.to_bytes()
 
     def scene_intersect(self, origin, direction):
         zbuffer = 999999
