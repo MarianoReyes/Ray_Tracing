@@ -6,7 +6,6 @@ from material import Material
 from light import Light
 
 r = Raytracer(800, 800)
-r.background_color = (color(255, 255, 255)).to_bytes()
 r.clear()
 
 rubber = Material(diffuse=color(80, 0, 0),  albedo=(0.9, 0.1, 0), spec=20)

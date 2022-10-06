@@ -17,8 +17,8 @@ class Raytracer (object):
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.colorN = color(0, 0, 100)
-        self.colorD = color(0, 0, 100)
+        self.point_color = color(0, 0, 100)
+        self.background_color = color(40, 40, 40)
         self.scene = []
         self.light = Light(V3(0, 0, 0), 1, color(255, 255, 255))
         self.density = 1
@@ -26,7 +26,8 @@ class Raytracer (object):
 
     def point(self, x, y, c=None):
         if not (x >= self.width and x < 0 and y < 0 and y >= self.height):
-            self.framebuffer[y][x] = c.to_bytes() or self.colorD.to_bytes()
+            self.framebuffer[y][x] = (
+                c.to_bytes()) or self.background_color.to_bytes()
 
     def write(self, filename="r.bmp"):
         f = open(filename, 'bw')
@@ -65,20 +66,20 @@ class Raytracer (object):
 
         f.close()
 
-    def cambioN(self, color):
-        self.colorN = color.to_bytes()
+    def cambio_color(self, color):
+        self.point_color = color.to_bytes()
 
-    def cambioD(self, color):
-        self.colorD = color.to_bytes()
+    def cambio_bgcolor(self, color):
+        self.background_color = color.to_bytes()
 
     def clear(self):
         self.framebuffer = [
-            [self.colorN.to_bytes() for x in range(self.width)]
+            [self.point_color.to_bytes() for x in range(self.width)]
             for y in range(self.height)
         ]
 
     def Color(self, r, g, b):
-        self.colorD = color(r, g, b).to_bytes()
+        self.background_color = color(r, g, b).to_bytes()
 
     def render(self):
         fov = int(pi/2)
@@ -101,12 +102,12 @@ class Raytracer (object):
     def cast_ray(self, origin, direction, recursion=0):
 
         if recursion >= MAX_RECURCIO:
-            return self.colorD
+            return self.background_color
 
         material, intersect = self.scene_intersect(origin, direction)
 
         if material is None:
-            return self.colorD
+            return self.background_color
 
         light_dir = (self.light.position - intersect.point).norm()
 
