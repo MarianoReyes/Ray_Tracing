@@ -1,4 +1,6 @@
 from turtle import position
+
+import scipy as sp
 from writeutilities import *
 from math import *
 from color import *
@@ -8,13 +10,15 @@ from material import *
 from light import *
 import random
 
+MAX_RECURCIO = 3
+
 
 class Raytracer (object):
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.background_color = color(255, 255, 255).to_bytes()
-        self.color = color(10, 10, 10).to_bytes()
+        self.colorN = color(0, 0, 100)
+        self.colorD = color(0, 0, 100)
         self.scene = []
         self.light = Light(V3(0, 0, 0), 1, color(255, 255, 255))
         self.density = 1
@@ -22,7 +26,7 @@ class Raytracer (object):
 
     def point(self, x, y, c=None):
         if not (x >= self.width and x < 0 and y < 0 and y >= self.height):
-            self.framebuffer[y][x] = c or self.color
+            self.framebuffer[y][x] = c.to_bytes() or self.colorD.to_bytes()
 
     def write(self, filename="r.bmp"):
         f = open(filename, 'bw')
@@ -61,20 +65,20 @@ class Raytracer (object):
 
         f.close()
 
+    def cambioN(self, color):
+        self.colorN = color.to_bytes()
+
+    def cambioD(self, color):
+        self.colorD = color.to_bytes()
+
     def clear(self):
         self.framebuffer = [
-            [self.background_color for x in range(self.width)]
+            [self.colorN.to_bytes() for x in range(self.width)]
             for y in range(self.height)
         ]
 
-    def backgroud_color_change(self, color):
-        self.background_color = color.to_bytes()
-
-    def color_change(self, color):
-        self.color = color.to_bytes()
-
-    # def Color(self, r, g, b):
-     #   self.color = color(r, g, b).to_bytes()
+    def Color(self, r, g, b):
+        self.colorD = color(r, g, b).to_bytes()
 
     def render(self):
         fov = int(pi/2)
@@ -94,24 +98,30 @@ class Raytracer (object):
 
                     self.point(x, y, c)
 
-    def cast_ray(self, origin, direction):
+    def cast_ray(self, origin, direction, recursion=0):
+
+        if recursion >= MAX_RECURCIO:
+            return self.colorD
+
         material, intersect = self.scene_intersect(origin, direction)
 
         if material is None:
-            return self.color
+            return self.colorD
 
         light_dir = (self.light.position - intersect.point).norm()
 
-        shadow_bias = 1.1
-        shadow_org = intersect.point + (intersect.normal * shadow_bias)
-        shadow_material, shadow_intersect = self.scene_intersect(
-            shadow_org, light_dir)
+        reflected_color = color(0, 0, 0,)
+        if material.albedo[2] > 0:
+            reversed_direction = direction * -1
+            reflected_direction = self.reflect(
+                reversed_direction, intersect.normal)
+            reflected_bias = -0.5 if reflected_direction @ intersect.normal < 0 else 0.5
+            reflected_orig = intersect.point + \
+                (intersect.normal * reflected_bias)
+            reflected_color = self.cast_ray(
+                reflected_orig, reflected_direction, recursion + 1)
 
-        shadow_intensity = 0
-
-        if shadow_material:
-            # esta en la sombra el punto
-            shadow_intensity = 0.7
+        reflection = reflected_color * material.albedo[2]
 
         deffuse_intensity = light_dir @ intersect.normal
 
@@ -119,14 +129,23 @@ class Raytracer (object):
         reflection_intensity = max(0, (light_reflection @ direction))
         specular_intensity = reflection_intensity ** material.spec
 
+        shadow_bias = 1.1
+        shadow_orig = intersect.point + (intersect.normal * shadow_bias)
+        shadow_material, shadow_intersect = self.scene_intersect(
+            shadow_orig, light_dir)
+        shadow_intensity = 1
+
+        if shadow_material:
+            shadow_intensity = 0.3
+
         specular = self.light.c * specular_intensity * \
             material.albedo[1] * self.light.intensity
 
         diffuse = material.diffuse * deffuse_intensity * \
-            material.albedo[0] * (1-shadow_intensity)
-        diffuse = diffuse + specular
+            material.albedo[0] * shadow_intensity
+        diffuse = diffuse + specular + reflection
 
-        return diffuse.to_bytes()
+        return diffuse
 
     def scene_intersect(self, origin, direction):
         zbuffer = 999999
