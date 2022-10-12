@@ -10,7 +10,7 @@ from envmap import *
 r = Raytracer(800, 800)
 
 r.light = Light(
-    position=V3(-20, 10, 20),
+    position=V3(20, -20, 20),
     intensity=1.5,
     c=color(255, 255, 255)
 )

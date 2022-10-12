@@ -22,10 +22,11 @@ class Envmap(object):
 
     def get_color(self, direction):
         direction = direction.norm()
-        x = int(atan2(direction.z, direction.x) / (2 * pi) + 0.5) * self.width
-        y = int(acos(-direction.y/pi)) * self.height
 
+        x = int((atan2(direction.z, direction.x) / (2 * pi) + 0.5) * self.width)
+        y = -int(acos(-direction.y) / pi * self.height)
         index = ((y * self.width + x) * 3) % len(self.pixels)
+
         c = self.pixels[index:index+3].astype(numpy.uint8)
         return color(
             c[2],
