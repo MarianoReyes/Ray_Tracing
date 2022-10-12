@@ -11,7 +11,7 @@ from material import *
 from light import *
 import random
 
-MAX_RECURCIO = 3
+MAX_RECURCION = 3
 
 
 class Raytracer (object):
@@ -23,6 +23,7 @@ class Raytracer (object):
         self.scene = []
         self.light = Light(V3(0, 0, 0), 1, color(255, 255, 255))
         self.density = 1
+        self.envmap = None
         self.clear()
 
     def point(self, x, y, c=None):
@@ -100,15 +101,21 @@ class Raytracer (object):
 
                     self.point(x, y, c)
 
+    def get_background(self, direction):
+        if self.envmap:
+            return self.envmap.get_color(direction)
+        else:
+            return self.background_color
+
     def cast_ray(self, origin, direction, recursion=0):
 
-        if recursion >= MAX_RECURCIO:
-            return self.background_color
+        if recursion >= MAX_RECURCION:
+            return self.get_background(direction)
 
         material, intersect = self.scene_intersect(origin, direction)
 
         if material is None:
-            return self.background_color
+            return self.get_background(direction)
 
         light_dir = (self.light.position - intersect.point).norm()
 
