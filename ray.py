@@ -19,7 +19,7 @@ class Raytracer (object):
         self.width = width
         self.height = height
         self.point_color = color(0, 0, 100)
-        self.background_color = color(40, 40, 200)
+        self.background_color = color(240, 240, 240)
         self.scene = []
         self.light = Light(V3(0, 0, 0), 1, color(255, 255, 255))
         self.density = 1
