@@ -1,4 +1,4 @@
-from material import Material
+from material import *
 from color import color
 
 ivory = Material(
@@ -33,9 +33,20 @@ grass = Material(
     refractive_index=0
 )
 
-log = Material(
+logg = Material(
     diffuse=color(101, 67, 33),
     albedo=(0.9, 0.1, 0, 0, 0),
     spec=10,
     refractive_index=0
+)
+
+leaves = Material(
+    diffuse=color(0, 143, 57),
+    albedo=(0.9, 0.1, 0, 0, 0),
+    spec=50,
+    refractive_index=0
+)
+
+grass2 = Material(
+    texture=Texture('grama.bmp')
 )

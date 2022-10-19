@@ -18,12 +18,32 @@ r.light = Light(
 )
 
 r.scene = [
-    #Sphere(V3(0, -1.5, -10), 1.5, ivory),
-    #Sphere(V3(0, 0, -5), 0.5, glass),
-    #Sphere(V3(1, 1, -8), 1.7, rubber),
-    #Sphere(V3(-3, 1, -10), 2, mirror),
-    PlaneY(V3(0, 1.5, -4), 10, 10, grass, -1),
-    Cube((-1, 1.2, -5), 1, log),
+    #PlaneY(V3(0, 1.5, -4), 10, 10, grass, -1),
+    # fila 3
+    Cube((-1, 1, -5), 1, logg),
+    Cube((-3, 2, -5), 1, grass),
+    Cube((-2, 2, -5), 1, grass),
+    Cube((-1, 2, -5), 1, grass),
+    Cube((0, 2, -5), 1, grass),
+    Cube((1, 2, -5), 1, grass),
+    Cube((2, 2, -5), 1, grass),
+    Cube((3, 2, -5), 1, grass),
+    # fila 2
+    Cube((-3, 2, -4), 1, grass),
+    Cube((-2, 2, -4), 1, grass),
+    Cube((-1, 2, -4), 1, grass),
+    Cube((0, 2, -4), 1, grass),
+    Cube((1, 2, -4), 1, grass),
+    Cube((2, 2, -4), 1, grass),
+    Cube((3, 2, -4), 1, grass),
+    # fila 1
+    Cube((-3, 2, -3), 1, grass),
+    Cube((-2, 2, -3), 1, grass),
+    Cube((-1, 2, -3), 1, grass),
+    Cube((0, 2, -3), 1, grass),
+    Cube((1, 2, -3), 1, grass),
+    Cube((2, 2, -3), 1, grass2),
+    Cube((3, 2, -3), 1, grass),
 ]
 
 #r.envmap = Envmap('./envmap.bmp')

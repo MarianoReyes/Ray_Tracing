@@ -171,6 +171,11 @@ class Raytracer (object):
 
         diffuse = diffuse + specular + reflection + refraction
 
+        if material.texture and intersect.text_coords is not None:
+            text_color = material.texture.get_color(
+                intersect.text_coords[0], intersect.text_coords[1])
+            diffuse = text_color * 255
+
         return diffuse
 
     def scene_intersect(self, origin, direction):
