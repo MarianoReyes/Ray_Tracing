@@ -4,7 +4,7 @@ from color import color
 from vector import V3
 from material import Material
 from light import Light
-from plane import Plane
+from plane import *
 from cube import Cube
 from envmap import *
 from materials import *
@@ -22,10 +22,10 @@ r.scene = [
     #Sphere(V3(0, 0, -5), 0.5, glass),
     #Sphere(V3(1, 1, -8), 1.7, rubber),
     #Sphere(V3(-3, 1, -10), 2, mirror),
-    #Plane(V3(0, 2, -5), 2, 2, mirror)
-    Cube((-1, 1, -5), 1, ivory),
+    PlaneY(V3(0, 1.5, -4), 10, 10, grass, -1),
+    Cube((-1, 1.2, -5), 1, log),
 ]
 
-r.envmap = Envmap('./envmap.bmp')
+#r.envmap = Envmap('./envmap.bmp')
 r.render()
 r.write('main2.bmp')

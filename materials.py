@@ -25,3 +25,17 @@ glass = Material(
     spec=125,
     refractive_index=1.5
 )
+
+grass = Material(
+    diffuse=color(100, 255, 100),
+    albedo=(0.6, 0.3, 0, 0),
+    spec=50,
+    refractive_index=0
+)
+
+log = Material(
+    diffuse=color(101, 67, 33),
+    albedo=(0.9, 0.1, 0, 0, 0),
+    spec=10,
+    refractive_index=0
+)
