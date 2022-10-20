@@ -42,6 +42,7 @@ r.scene = [
     Cube((3, 2, -6), 1, grass),
     Cube((4, 2, -6), 1, grass),
     # fila 3
+    Cube((-1, 0, -5), 1, logg),
     Cube((-1, 1, -5), 1, logg),
     Cube((-3, 2, -5), 1, grass),
     Cube((-2, 2, -5), 1, grass),
