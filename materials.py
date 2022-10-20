@@ -28,23 +28,30 @@ glass = Material(
 
 grass = Material(
     diffuse=color(100, 255, 100),
-    albedo=(0.6, 0.3, 0, 0),
+    albedo=(0.6, 0.3, 0.1, 0),
     spec=50,
     refractive_index=0
 )
 
 logg = Material(
     diffuse=color(101, 67, 33),
-    albedo=(0.9, 0.1, 0, 0, 0),
+    albedo=(0.9, 0.1, 0, 0),
     spec=10,
     refractive_index=0
 )
 
 leaves = Material(
     diffuse=color(0, 143, 57),
-    albedo=(0.9, 0.1, 0, 0, 0),
+    albedo=(0.9, 0.1, 0, 0),
     spec=50,
     refractive_index=0
+)
+
+water = Material(
+    diffuse=color(0, 114, 133),
+    albedo=(0.9, 0.1, 0.1, 1.333),
+    spec=125,
+    refractive_index=0.1
 )
 
 grass2 = Material(
