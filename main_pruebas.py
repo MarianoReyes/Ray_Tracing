@@ -19,8 +19,8 @@ r.light = Light(
 
 r.scene = [
     PlaneY(V3(0, 2, -4), 10, 10, grass, -1),
+    PlaneY(V3(0, 2, -14), 20, 10, sand, -1),
 
-    # fila 3
     Cube((-2, -1, -5), 1, leaves),
     Cube((0, -1, -5), 1, leaves),
     Cube((-1, -1, -6), 1, leaves),
@@ -28,6 +28,15 @@ r.scene = [
     Cube((-1, -2, -5), 1, leaves),
     Cube((-1, 0, -5), 1, logg),
     Cube((-1, 1, -5), 1, logg),
+
+    Cube((1, 2.4, -5), 1, water),
+    Cube((2, 2.4, -5), 1, water),
+
+    Cube((0, 2.4, -6), 1, water),
+    Cube((1, 2.4, -6), 1, water),
+    Cube((2, 2.4, -6), 1, water),
+
+    Cube((2, 2.4, -7), 1, water),
 ]
 
 r.envmap = Envmap('./envmap.bmp')
