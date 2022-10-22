@@ -40,6 +40,8 @@ class PlaneZ(object):
         self.height = height
         self.material = material
         self.normal = V3(0, 0, normal)
+        self.xmin = center.x-width*0.5
+        self.ymin = center.y-height*0.5
 
     def ray_intersect(self, origin, direction):
 
@@ -55,7 +57,9 @@ class PlaneZ(object):
         return Intersect(
             distance=d,
             point=impact,
-            normal=self.normal
+            normal=self.normal,
+            percentage=((impact.x - self.xmin)/self.width,
+                        (impact.y - self.ymin)/self.height)
         )
 
 
@@ -66,6 +70,8 @@ class PlaneY(object):
         self.height = height
         self.material = material
         self.normal = V3(0, normal, 0)
+        self.xmin = center.x-width*0.5
+        self.ymin = center.z-width*0.5
 
     def ray_intersect(self, origin, direction):
 
@@ -73,15 +79,17 @@ class PlaneY(object):
         impact = direction * d - origin
 
         if d <= 0 or \
-                impact.x > (self.center.x + self.width/2) or impact.x < (self.center.x - self.width/2) or \
-                impact.z > (self.center.z + self.height/2) or impact.z < (self.center.z - self.height/2):
+                impact.x > (self.center.x + self.width*0.5) or impact.x < (self.center.x - self.width*0.5) or \
+                impact.z > (self.center.z + self.height*0.5) or impact.z < (self.center.z - self.height*0.5):
 
             return None
 
         return Intersect(
             distance=d,
             point=impact,
-            normal=self.normal
+            normal=self.normal,
+            percentage=((impact.x - self.xmin)/self.width,
+                        (impact.z - self.ymin)/self.height)
         )
 
 
@@ -92,6 +100,8 @@ class PlaneX(object):
         self.height = height
         self.material = material
         self.normal = V3(normal, 0, 0)
+        self.xmin = center.z-width*0.5
+        self.ymin = center.y-width*0.5
 
     def ray_intersect(self, origin, direction):
 
@@ -99,13 +109,15 @@ class PlaneX(object):
         impact = direction * d - origin
 
         if d <= 0 or \
-                impact.y > (self.center.y + self.width/2) or impact.y < (self.center.y - self.width/2) or \
-                impact.z > (self.center.z + self.height/2) or impact.z < (self.center.z - self.height/2):
+                impact.y > (self.center.y + self.width*0.5) or impact.y < (self.center.y - self.width*0.5) or \
+                impact.z > (self.center.z + self.height*0.5) or impact.z < (self.center.z - self.height*0.5):
 
             return None
 
         return Intersect(
             distance=d,
             point=impact,
-            normal=self.normal
+            normal=self.normal,
+            percentage=((impact.z - self.xmin)/self.height,
+                        (impact.y - self.ymin)/self.width)
         )

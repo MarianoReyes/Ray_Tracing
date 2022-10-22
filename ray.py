@@ -84,7 +84,7 @@ class Raytracer (object):
         self.background_color = color(r, g, b).to_bytes()
 
     def render(self):
-        fov = int(pi/2)
+        fov = int(pi/1.7)
         ar = self.width / self.height
         tana = tan(fov/2)
 
@@ -116,6 +116,10 @@ class Raytracer (object):
 
         if material is None:
             return self.get_background(direction)
+
+        if material.textura:
+            material.diffuse = material.textura.get_color(
+                *intersect.percentage)
 
         light_dir = (self.light.position - intersect.point).norm()
 
@@ -170,11 +174,6 @@ class Raytracer (object):
             material.albedo[0] * shadow_intensity
 
         diffuse = diffuse + specular + reflection + refraction
-
-        if material.texture and intersect.text_coords is not None:
-            text_color = material.texture.get_color(
-                intersect.text_coords[0], intersect.text_coords[1])
-            diffuse = text_color * 255
 
         return diffuse
 
